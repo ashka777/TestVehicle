@@ -55,7 +55,7 @@ namespace TestVehicle
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     modelBox.Items.Add(dataRow);
-                    modelBox.SelectionBoxItem.
+                    modelBox.ItemsSource = dataTable.Columns["Name"];
                     modelBox.DataContext = dataRow;
                 }
 
