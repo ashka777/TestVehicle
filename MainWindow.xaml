@@ -5,8 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestVehicle"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="565" Width="912" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="79*"/>
+            <ColumnDefinition Width="833*"/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="384" VerticalAlignment="Center" Width="820" Grid.ColumnSpan="2" Margin="46,0,0,0"/>
+        <ComboBox x:Name="modelBox" HorizontalAlignment="Left" Height="28" Margin="153,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" Grid.Column="1"/>
+        <Button x:Name="ExcelBtn" Content="Выгрузить в Excel" HorizontalAlignment="Left" Height="28" Margin="434,28,0,0" VerticalAlignment="Top" Width="250" FontSize="16" Click="ExcelBtn_Click" Grid.Column="1"/>
+        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Height="32" Margin="57,489,0,0" VerticalAlignment="Top" Width="359" FontSize="14" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
