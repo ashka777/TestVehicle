@@ -6,22 +6,27 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace TestVehicle
 {
     internal class Connection
     {
-        internal static SqlConnection DBConnection()
+        internal static SqlConnection DBConnection(out string stateConnLabel)
         {
             try
             {
                 SqlConnection sqlConnection = new SqlConnection("server=DESKTOP-JFTOVAG;Trusted_Connection=Yes;DataBase=DBVehicle;");
 
-                if (sqlConnection.State == ConnectionState.Open)
-                    return sqlConnection;
-                else
-                    sqlConnection.Open();
+                //if (sqlConnection.State == ConnectionState.Closed)
+                //{
+                //    //sqlConnection.Open();
+                stateConnLabel = "Подключение с БД установлено";
                 return sqlConnection;
+                //}
+                //else
+                //    stateConnLabel = "Подключение с БД отсутствует";
+                //return null;
             }
             catch (Exception ex)
             {

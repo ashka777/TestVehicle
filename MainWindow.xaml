@@ -12,10 +12,10 @@
             <ColumnDefinition Width="833*"/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="384" VerticalAlignment="Center" Width="820" Grid.ColumnSpan="2" Margin="46,0,0,0"/>
-        <ComboBox x:Name="modelBox" HorizontalAlignment="Left" Height="28" Margin="153,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" Grid.Column="1"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Center" Height="384" VerticalAlignment="Center" Width="832" Grid.ColumnSpan="2" AutoGenerateColumns="False" Grid.RowSpan="1" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+        <ComboBox x:Name="modelBox" HorizontalAlignment="Left" Height="28" Margin="153,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" Grid.Column="1" DisplayMemberPath="Name" SelectedValuePath="id" ItemsSource="{Binding tModel}" SelectionChanged="modelBox_SelectionChanged"  />
         <Button x:Name="ExcelBtn" Content="Выгрузить в Excel" HorizontalAlignment="Left" Height="28" Margin="434,28,0,0" VerticalAlignment="Top" Width="250" FontSize="16" Click="ExcelBtn_Click" Grid.Column="1"/>
-        <Label x:Name="label" Content="Label" HorizontalAlignment="Left" Height="32" Margin="57,489,0,0" VerticalAlignment="Top" Width="359" FontSize="14" Grid.ColumnSpan="2"/>
+        <Label x:Name="labelConnect" Content="" HorizontalAlignment="Left" Height="32" Margin="57,489,0,0" VerticalAlignment="Top" Width="359" FontSize="14" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>
