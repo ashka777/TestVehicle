@@ -5,22 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TestVehicle"
         mc:Ignorable="d"
-        Title="Автомобильный дилер" Height="565" Width="1165" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF8993F5">
+        Title="Автомобильный дилер" Height="565" Width="1165" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF8993F5" Closing="Window_Closing">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF6ECEEA" Offset="0.9"/>
-                <GradientStop Color="#FF07C2F9" Offset="1"/>
-                <GradientStop Color="#FF1955BD" Offset="0.204"/>
+                <GradientStop Color="#FF6E6E6E" Offset="0.971"/>
+                <GradientStop Color="#FF464646" Offset="1"/>
+                <GradientStop Color="#FF9AA9C3" Offset="0.007"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="79*"/>
-            <ColumnDefinition Width="833*"/>
-            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Center" Height="384" VerticalAlignment="Center" Width="1118" Grid.ColumnSpan="2" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled" AutoGenerateColumns="False" Background="#FFF2F5F1" />
-        <ComboBox x:Name="modelBox" HorizontalAlignment="Left" Height="28" Margin="319,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="ModelId" ItemsSource="{Binding tModel}" SelectionChanged="modelBox_SelectionChanged" Grid.Column="1"  >
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Center" Height="384" VerticalAlignment="Center" Width="1118" Grid.ColumnSpan="2" HeadersVisibility="Column" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#FFF8FDF7" Grid.Row="1" AutoGenerateColumns="True" />
+        <ComboBox x:Name="modelBox" HorizontalAlignment="Left" Height="28" Margin="397,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" DisplayMemberPath="Name" SelectedValuePath="ModelId" ItemsSource="{Binding tModel}" SelectionChanged="modelBox_SelectionChanged" Grid.RowSpan="2"  >
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1">
                     <GradientStop Color="#FFD8EA25" Offset="0"/>
@@ -28,9 +29,9 @@
                 </LinearGradientBrush>
             </ComboBox.Background>
         </ComboBox>
-        <Button x:Name="ExcelBtn" Content="Выгрузить в Excel" HorizontalAlignment="Left" Height="28" Margin="724,28,0,0" VerticalAlignment="Top" Width="250" FontSize="16" Click="ExcelBtn_Click" Grid.Column="1" Background="#FF069113"/>
-        <Label x:Name="labelConnect" Content="" HorizontalAlignment="Left" Height="32" Margin="57,489,0,0" VerticalAlignment="Top" Width="1085" FontSize="14" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="yearBox" HorizontalAlignment="Left" Height="28" Margin="19,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" DisplayMemberPath="Date" SelectedValuePath="Date" ItemsSource="{Binding tYear}" SelectionChanged="yearBox_SelectionChanged" Grid.Column="1"  >
+        <Button x:Name="ExcelBtn" Content="Выгрузить в Excel" HorizontalAlignment="Left" Height="28" Margin="820,28,0,0" VerticalAlignment="Top" Width="250" FontSize="16" Click="ExcelBtn_Click" Background="#FF7BDC84" Grid.RowSpan="2"/>
+        <Label x:Name="labelConnect" Content="" HorizontalAlignment="Left" Height="32" Margin="57,489,0,0" VerticalAlignment="Top" Width="1085" FontSize="14" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+        <ComboBox x:Name="yearBox" HorizontalAlignment="Left" Height="28" Margin="115,28,0,0" VerticalAlignment="Top" Width="184" FontSize="16" DisplayMemberPath="Date" SelectedValuePath="Date" ItemsSource="{Binding tYear}" SelectionChanged="yearBox_SelectionChanged" Grid.RowSpan="2"  >
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1">
                     <GradientStop Color="#FFD8EA25"/>
@@ -38,9 +39,9 @@
                 </LinearGradientBrush>
             </ComboBox.Background>
         </ComboBox>
-        <Button x:Name="button" Content="!" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="1009,28,0,0" VerticalAlignment="Top" Width="32" Background="#FFDBF00C" FontSize="18" FontWeight="Bold" Click="button_Click"/>
-        <Label x:Name="label" Content="Модель" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="247,28,0,0" VerticalAlignment="Top" Width="70"/>
-        <Label x:Name="label_Copy" Content="Год" HorizontalAlignment="Left" Height="28" Margin="72,28,0,0" VerticalAlignment="Top" Width="46" Grid.ColumnSpan="2"/>
+        <Button x:Name="button" Content="!" HorizontalAlignment="Left" Height="28" Margin="1101,28,0,0" VerticalAlignment="Top" Width="32" Background="#FF62A9BD" FontSize="18" FontWeight="Bold" Click="button_Click" Grid.RowSpan="2" Foreground="#FFF7EC03"/>
+        <Label x:Name="label" Content="Модель" HorizontalAlignment="Left" Height="28" Margin="335,28,0,0" VerticalAlignment="Top" Width="58" Grid.RowSpan="2"/>
+        <Label x:Name="label_Copy" Content="Год" HorizontalAlignment="Left" Height="28" Margin="75,28,0,0" VerticalAlignment="Top" Width="38" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>

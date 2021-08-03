@@ -2,92 +2,48 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TestVehicle;
 
 namespace TestVehicle
 {
     public partial class MainWindow : Window
     {
-        float dgWidth;
-        SqlConnection sqlConnection;
+        private const int markerLine = 25000000;
+        public static float dgWidth;
+        private SqlConnection sqlConnection;
         private int selectModelId = -1;
         private string selectYear = DateTime.Now.Year.ToString();
-
+        GetData getData = new GetData();
         public MainWindow()
         {
             InitializeComponent();
-            string stateConnLabel;
             try
             {
-                sqlConnection = Connection.DBConnection(out stateConnLabel);
+                sqlConnection = Connection.DBConnection();
                 GetData();
             }
             catch (Exception ex)
             {
                 labelConnect.Content = "Ошибка: " + ex.Message;
             }
-
         }
 
         private void GetData()
         {
             GetYearComboBox();
             GetModelComboBox();
-            GetTableGrid(GetAllModels());
-        }
-
-        private DataTable GetAllModels()
-        {
-            string selectSQL = "WITH cte as (SELECT ord.ModelId, br.Name +' '+ mod.Name Model, ord.TotalSum Total, ord.InsDate Date " +
-                    "FROM tOrder ord " +
-                    "LEFT JOIN tPrice pr ON pr.Id = ord.Price " +
-                    "LEFT JOIN tBrand br ON br.Id = ord.BrandId " +
-                    "LEFT JOIN tModel mod ON mod.Id = ord.ModelId ";
-
-            if (selectYear != "Все")
-            {
-                selectSQL += string.Format("WHERE YEAR(ord.InsDate) = {0}) ", selectYear);
-            }
-            else
-                selectSQL += ") ";
-            selectSQL += "SELECT cte.ModelId, cte.Model, [Date]=MONTH(cte.Date), sum(Total) Total " +
-                "into #t1 FROM cte GROUP BY cte.ModelId, cte.Model, MONTH(cte.Date) " +
-                "select* from(select ModelId, Model, Total, [Date] as mon from #t1) as t " +
-                "pivot(sum(Total) for mon in ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12])) as result ";
-
-            if (selectModelId >= 0)
-            {
-                selectSQL += string.Format("WHERE ModelId = {0}", selectModelId);
-            }
-
-            using (SqlCommand sqlCommand = new SqlCommand(selectSQL, sqlConnection))
-            {
-                DataTable dataTable = new DataTable("tOrders");
-                sqlCommand.CommandText = selectSQL;
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
-                sqlDataAdapter.Fill(dataTable);
-                return dataTable;
-            }
+            GetTableGrid(getData.GetAllModels(selectYear, selectModelId));
         }
 
         private void GetTableGrid(DataTable dataTable)
         {
             int i = 0;
             dgWidth = (int)dataGrid.Width;
-            List<string> columnNameProp = ColumnProperty.GetColumnName();
-            float[] columnWidthProp = ColumnProperty.GetColumnWidth(dgWidth);
+            List<string> columnNameProp = ColumnsProperties.GetColumnName();
+            float[] columnWidthProp = ColumnsProperties.GetColumnWidth();
+            
             foreach (DataColumn col in dataTable.Columns)
             {
                 dgWidth -= columnWidthProp[i];
@@ -96,31 +52,30 @@ namespace TestVehicle
                       {
                           Header = columnNameProp[i],
                           Width = columnWidthProp[i],
-                          Binding = new Binding(string.Format("{0}", col.ColumnName)),
-                      });
+                          Binding = new Binding(string.Format("{0}", col.ColumnName))
+                      }); ;
                 i++;
             }
+
+            for (int rows = 0; rows < dataTable.Rows.Count; rows++)
+            {
+                for (int columns = 1; columns < dataTable.Columns.Count; columns++)
+                {
+                    if (columns > 1)
+                    {
+                        if (string.IsNullOrEmpty(dataTable.Rows[rows][columns].ToString()))
+                        {
+                            dataTable.Rows[rows][columns] = "0";
+                        }
+                    }
+                }
+            }
+
             dataGrid.Columns[0].Visibility = Visibility.Collapsed;
             dataGrid.DataContext = dataTable;
             dataGrid.ItemsSource = dataTable.DefaultView;
-
-            //for (int rows = 0; rows < dataGrid.Items.Count; rows++)
-            //{
-                foreach (var item in dataGrid.Columns)
-                {
-                    var s = item;
-                
-                for (int columns = 2; columns < dataGrid.Items.Count; columns++)
-                {
-                    if (dataGrid.Items[columns] is not null)
-                        if (Convert.ToInt32(dataGrid.Items[columns]) > 25000000)
-                            dataGrid.Items[columns] = System.Windows.Media.Brushes.LightYellow;
-                }
-            }
-            //}
             labelConnect.Content = "Всего записей: " + dataTable.Rows.Count;
         }
-
 
         public void GetModelComboBox()
         {
@@ -154,24 +109,31 @@ namespace TestVehicle
 
         private void ExcelBtn_Click(object sender, RoutedEventArgs e)
         {
-            ExportExcel excel = new ExportExcel(GetAllModels());
+            ExportExcel excel = new ExportExcel(getData.GetAllModels(selectYear, selectModelId), markerLine);
         }
 
         private void modelBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectModelId = (int)modelBox.SelectedValue;
-            GetTableGrid(GetAllModels());
+            GetTableGrid(getData.GetAllModels(selectYear, selectModelId));
         }
 
         private void yearBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectYear = (string)yearBox.SelectedValue;
-            GetTableGrid(GetAllModels());
+            GetTableGrid(getData.GetAllModels(selectYear, selectModelId));
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Андрей.\n+79316055903.");
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Закрыть программу?", "Выход", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.No)
+                e.Cancel = true;
         }
     }
 }

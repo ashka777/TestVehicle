@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestVehicle
 {
-    class ColumnProperty
+    class ColumnsProperties
     {
         const float columnModel = 100;
 
@@ -22,14 +19,14 @@ namespace TestVehicle
             return columnNameProp;
         }
 
-        public static float[] GetColumnWidth(float dgWidth)
+        public static float[] GetColumnWidth()
         {
-            dgWidth -= columnModel; // размер datagrid минус столбец Модель
+            MainWindow.dgWidth -= columnModel; // размер datagrid минус столбец Модель
             float[] columnWidthProp = new float[14];
             columnWidthProp[1] = columnModel;
             for (int m = 2; m < columnWidthProp.Count(); m++)
             {
-                columnWidthProp[m] = dgWidth / 12;
+                columnWidthProp[m] = MainWindow.dgWidth / 12;
             }
             return columnWidthProp;
         }
